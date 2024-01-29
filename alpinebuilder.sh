@@ -75,7 +75,7 @@ execute_command() {
             echo "Setting up Nix package manager..."
             ;;
         13)
-            apk add gimp tailscale vlc firefox thunderbird git papirus-icon-theme geany distrobox wine 
+            apk add gimp tailscale vlc firefox thunderbird git papirus-icon-theme geany distrobox wine fish
             echo "Setting up Derriks packages..."
             ;;
         14)
