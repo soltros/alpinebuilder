@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Check if 'dialog' is installed
+if ! command -v dialog &> /dev/null; then
+    echo "dialog is not installed. Please install it first."
+    exit 1
+fi
+
 # Function to display the menu using dialog
 show_menu() {
     dialog --clear --title "Select an Option" --menu "Choose an option from the menu:" 18 60 15 \
@@ -23,7 +29,12 @@ show_menu() {
 
 # Function to execute the selected command
 execute_command() {
-    choice=$(cat menu_choice.txt)
+    if [ ! -s menu_choice.txt ]; then
+        echo "No selection made or 'dialog' exited with an error."
+        return
+    fi
+
+    choice=$(< menu_choice.txt)
 
     case $choice in
         1)
@@ -87,12 +98,10 @@ execute_command() {
             echo "Updating..."
             ;;
         16)
-            # Exit the script
             echo "Exiting..."
             exit 0
             ;;
         *)
-            # Handle invalid selection
             echo "Invalid selection. Please try again."
             ;;
     esac
