@@ -24,7 +24,42 @@ show_menu() {
         13 "Option 13: Setup Derriks packages" \
         14 "Option 14: Setup Derriks Flatpak packages" \
         15 "Option 15: Update Alpine" \
-        16 "Exit" 2> menu_choice.txt
+        16 "Option 16: Convert Alpine Ext4 to Btrfs" \
+        17 "Exit" 2> menu_choice.txt
+}
+
+# Function to convert filesystem to Btrfs
+convert_to_btrfs() {
+    # Check if btrfs-convert is installed
+    if ! command -v btrfs-convert &> /dev/null; then
+        echo "btrfs-convert is not installed. Please install btrfs-progs first."
+        return 1
+    fi
+
+    # Get the device to convert
+    read -rp "Enter the device to convert to Btrfs (e.g., /dev/sda1): " device
+
+    # Verify that the device is not mounted
+    if mount | grep -q "$device"; then
+        echo "The device $device is mounted. Please unmount it before proceeding."
+        return 1
+    fi
+
+    # Confirm with the user
+    read -rp "Are you sure you want to convert $device to Btrfs? This cannot be undone. [y/N]: " confirmation
+    if [[ $confirmation != "y" && $confirmation != "Y" ]]; then
+        echo "Conversion cancelled."
+        return 1
+    fi
+
+    # Perform the conversion
+    echo "Converting $device to Btrfs..."
+    if btrfs-convert "$device"; then
+        echo "Conversion completed successfully."
+    else
+        echo "Conversion failed."
+        return 1
+    fi
 }
 
 # Function to execute the selected command
@@ -98,6 +133,9 @@ execute_command() {
             echo "Updating..."
             ;;
         16)
+            convert_to_btrfs
+            ;;
+        17)
             echo "Exiting..."
             exit 0
             ;;
