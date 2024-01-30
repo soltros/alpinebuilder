@@ -7,7 +7,7 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 # Step 1: Install GRUB EFI package
-apk add grub-efi
+apk add grub-efi os-prober efibootmgr
 
 # Step 2: Ensure /boot is on a FAT32 filesystem (manual check required)
 
