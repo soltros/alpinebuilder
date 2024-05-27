@@ -1,31 +1,25 @@
 #!/bin/bash
 
-# Check if 'dialog' is installed
-if ! command -v dialog &> /dev/null; then
-    echo "dialog is not installed. Please install it first."
-    exit 1
-fi
-
-# Function to display the menu using dialog
+# Function to display the menu
 show_menu() {
-    dialog --clear --title "Select an Option" --menu "Choose an option from the menu:" 18 60 15 \
-        1 "Option 1: Setup Xorg" \
-        2 "Option 2: Setup Nvidia GPU drivers" \
-        3 "Option 3: Setup Pipewire/Wireplumber" \
-        4 "Option 4: Configure Networking" \
-        5 "Option 5: Configure Dbus" \
-        6 "Option 6: Configure Plugdev" \
-        7 "Option 7: Configure Eudev" \
-        8 "Option 8: Setup Docker" \
-        9 "Option 9: Setup Gnome Shell" \
-        10 "Option 10: Setup KDE Plasma 5" \
-        11 "Option 11: Setup Flatpak" \
-        12 "Option 12: Setup NixOS package manager" \
-        13 "Option 13: Setup Derriks packages" \
-        14 "Option 14: Setup Derriks Flatpak packages" \
-        15 "Option 15: Update Alpine" \
-        16 "Option 16: Convert Alpine Ext4 to Btrfs" \
-        17 "Exit" 2> menu_choice.txt
+    echo "Select an Option:"
+    echo "1) Option 1: Setup Xorg"
+    echo "2) Option 2: Setup Nvidia GPU drivers"
+    echo "3) Option 3: Setup Pipewire/Wireplumber"
+    echo "4) Option 4: Configure Networking"
+    echo "5) Option 5: Configure Dbus"
+    echo "6) Option 6: Configure Plugdev"
+    echo "7) Option 7: Configure Eudev"
+    echo "8) Option 8: Setup Docker"
+    echo "9) Option 9: Setup Gnome Shell"
+    echo "10) Option 10: Setup KDE Plasma 5"
+    echo "11) Option 11: Setup Flatpak"
+    echo "12) Option 12: Setup NixOS package manager"
+    echo "13) Option 13: Setup Derriks packages"
+    echo "14) Option 14: Setup Derriks Flatpak packages"
+    echo "15) Option 15: Update Alpine"
+    echo "16) Option 16: Convert Alpine Ext4 to Btrfs"
+    echo "17) Exit"
 }
 
 # Function to convert filesystem to Btrfs
@@ -64,13 +58,6 @@ convert_to_btrfs() {
 
 # Function to execute the selected command
 execute_command() {
-    if [ ! -s menu_choice.txt ]; then
-        echo "No selection made or 'dialog' exited with an error."
-        return
-    fi
-
-    choice=$(< menu_choice.txt)
-
     case $choice in
         1)
             setup-xorg-base
@@ -148,5 +135,6 @@ execute_command() {
 # Main loop to display the menu and execute commands
 while true; do
     show_menu
+    read -rp "Enter your choice: " choice
     execute_command
 done
