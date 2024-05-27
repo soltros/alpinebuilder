@@ -81,43 +81,43 @@ execute_command() {
             echo "Setting up Open-source Nvidia drivers..."
             ;;
         3)
-            apk add pipewire wireplumber pipewire-pulse pipewire-alsa;cp -a /usr/share/pipewire /etc;cp -a /usr/share/wireplumber /etc
+            apk add pipewire wireplumber pipewire-pulse pipewire-alsa; cp -a /usr/share/pipewire /etc; cp -a /usr/share/wireplumber /etc
             echo "Setting up Pipewire..."
             ;;
         4)
-            apk add networkmanager networkmanager-wifi;rc-service networkmanager start;rc-update add networkmanager default
+            apk add networkmanager networkmanager-wifi; rc-service networkmanager start; rc-update add networkmanager default
             echo "Configuring Network Manager..."
             ;;
         5)
-            apk add dbus dbus-x11;rc-update add dbus;rc-service dbus start
+            apk add dbus dbus-x11; rc-update add dbus; rc-service dbus start
             echo "Configuring Dbus..."
             ;;
         6)
-            groupadd plugdev;usermod -a -G plugdev derrik
+            groupadd plugdev; usermod -a -G plugdev derrik
             echo "Configuring Plugdev..."
             ;;
         7)
-            apk add alpine-conf;setup-devd udev
+            apk add alpine-conf; setup-devd udev
             echo "Configuring Udevd..."
             ;;
         8)
-            apk add docker docker-cli-compose;addgroup derrik;rc-update add docker default;service docker start
+            apk add docker docker-cli-compose; addgroup derrik; rc-update add docker default; service docker start
             echo "Setting up Docker..."
             ;;
         9)
-            setup-desktop gnome;apk add gnome-apps-extra;rc-update add apk-polkit-server default && rc-service apk-polkit-server start;apk add mesa-gles;rc-service gdm start;rc-update add gdm
+            setup-desktop gnome; apk add gnome-apps-extra; rc-update add polkit default && rc-service polkit start; apk add mesa-gles; rc-service gdm start; rc-update add gdm
             echo "Setting up Gnome Shell..."
             ;;
         10)
-            apk add plasma kde-applications sddm;rc-service sddm start;rc-update add sddm
+            apk add plasma kde-applications sddm; rc-service sddm start; rc-update add sddm
             echo "Setting up KDE Plasma 5..."
             ;;
         11)
-            apk add flatpak;flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+            apk add flatpak; flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
             echo "Setting up Flatpak..."
             ;;
         12)
-            apk add curl;sh <(curl -L https://nixos.org/nix/install) --daemon
+            apk add curl; sh <(curl -L https://nixos.org/nix/install) --daemon
             echo "Setting up Nix package manager..."
             ;;
         13)
@@ -126,10 +126,10 @@ execute_command() {
             ;;
         14)
             flatpak install com.mattjakeman.ExtensionManager com.discordapp.Discord com.spotify.Client com.valvesoftware.Steam org.telegram.desktop tv.plex.PlexDesktop com.nextcloud.desktopclient.nextcloud im.riot.Riot
-            echo "Executing Command 14..."
+            echo "Setting up Derriks Flatpak packages..."
             ;;
         15)
-            setup-apkrepos;apk update;apk upgrade --available
+            setup-apkrepos; apk update; apk upgrade --available
             echo "Updating..."
             ;;
         16)
