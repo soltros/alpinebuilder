@@ -72,7 +72,7 @@ execute_command() {
             echo "Setting up Pipewire..."
             ;;
         4)
-            apk add networkmanager networkmanager-wifi; rc-service networkmanager start; rc-update add networkmanager default
+            apk add networkmanager networkmanager-wifi;wget https://raw.githubusercontent.com/soltros/alpinebuilder/main/configs/NetworkManager.conf -O /etc/NetworkManager/NetworkManager.conf;rc-service networkmanager start; rc-update add networkmanager default;rc-service networking stop;rc-update del networking boot;rc-service networkmanager restart
             echo "Configuring Network Manager..."
             ;;
         5)
@@ -108,11 +108,11 @@ execute_command() {
             echo "Setting up Nix package manager..."
             ;;
         13)
-            apk add gimp tailscale vlc firefox thunderbird git papirus-icon-theme geany distrobox wine fish
+            apk add gimp tailscale vlc firefox thunderbird git papirus-icon-theme geany distrobox wine fish util-linux pciutils hwdata-pci usbutils hwdata-usb coreutils binutils findutils grep iproute2 bash bash-completion udisks2 build-base abuild cmake extra-cmake-modules
             echo "Setting up Derriks packages..."
             ;;
         14)
-            flatpak install com.mattjakeman.ExtensionManager com.discordapp.Discord com.spotify.Client com.valvesoftware.Steam org.telegram.desktop tv.plex.PlexDesktop com.nextcloud.desktopclient.nextcloud im.riot.Riot
+            flatpak install com.mattjakeman.ExtensionManager com.discordapp.Discord com.spotify.Client com.valvesoftware.Steam org.telegram.desktop tv.plex.PlexDesktop com.nextcloud.desktopclient.nextcloud im.riot.Riot -y
             echo "Setting up Derriks Flatpak packages..."
             ;;
         15)
