@@ -2,7 +2,7 @@
 
 # Install necessary tools
 echo "Installing necessary tools..."
-sudo apk add curl tar gzip bash
+doas apk add curl tar gzip bash
 
 # Download and install Nix
 echo "Downloading and installing Nix..."
@@ -31,8 +31,8 @@ echo "Sourcing shell profile..."
 
 # Create a script to start the Nix daemon
 echo "Creating Nix daemon start script..."
-sudo mkdir -p /etc/nix
-sudo tee /etc/nix/start-nix-daemon.sh <<EOF
+doas mkdir -p /etc/nix
+doas tee /etc/nix/start-nix-daemon.sh <<EOF
 #!/bin/sh
 if [ -x /nix/var/nix/profiles/default/bin/nix-daemon ]; then
     /nix/var/nix/profiles/default/bin/nix-daemon &
@@ -41,17 +41,17 @@ EOF
 
 # Make the script executable
 echo "Making the script executable..."
-sudo chmod +x /etc/nix/start-nix-daemon.sh
+doas chmod +x /etc/nix/start-nix-daemon.sh
 
 # Add the script to the boot process
 echo "Adding script to boot process..."
-sudo mkdir -p /etc/local.d
-sudo ln -s /etc/nix/start-nix-daemon.sh /etc/local.d/nix.start
-sudo rc-update add local default
+doas mkdir -p /etc/local.d
+doas ln -s /etc/nix/start-nix-daemon.sh /etc/local.d/nix.start
+doas rc-update add local default
 
 # Start the Nix daemon now
 echo "Starting Nix daemon..."
-sudo /etc/nix/start-nix-daemon.sh
+doas /etc/nix/start-nix-daemon.sh
 
 # Verify the installation
 echo "Verifying Nix installation..."
