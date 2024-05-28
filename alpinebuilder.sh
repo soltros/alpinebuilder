@@ -30,7 +30,8 @@ execute_command() {
             echo "Setting up Xorg..."
             ;;
         2)
-            apk add xf86-video-nouveau mesa-dri-gallium mesa-va-gallium
+            apk add xf86-video-nouveau mesa-dri-gallium mesa-va-gallium;curl https://raw.githubusercontent.com/soltros/alpinebuilder/main/nvidia-oss-module-installer.sh | sh
+
             echo "Setting up Open-source Nvidia drivers..."
             ;;
         3)
