@@ -18,42 +18,8 @@ show_menu() {
     echo "13) Option 13: Setup Derriks packages"
     echo "14) Option 14: Setup Derriks Flatpak packages"
     echo "15) Option 15: Update Alpine"
-    echo "16) Option 16: Convert Alpine Ext4 to Btrfs"
+    echo "16) Option 16: Setup Tailscale"
     echo "17) Exit"
-}
-
-# Function to convert filesystem to Btrfs
-convert_to_btrfs() {
-    # Check if btrfs-convert is installed
-    if ! command -v btrfs-convert &> /dev/null; then
-        echo "btrfs-convert is not installed. Please install btrfs-progs first."
-        return 1
-    fi
-
-    # Get the device to convert
-    read -rp "Enter the device to convert to Btrfs (e.g., /dev/sda1): " device
-
-    # Verify that the device is not mounted
-    if mount | grep -q "$device"; then
-        echo "The device $device is mounted. Please unmount it before proceeding."
-        return 1
-    fi
-
-    # Confirm with the user
-    read -rp "Are you sure you want to convert $device to Btrfs? This cannot be undone. [y/N]: " confirmation
-    if [[ $confirmation != "y" && $confirmation != "Y" ]]; then
-        echo "Conversion cancelled."
-        return 1
-    fi
-
-    # Perform the conversion
-    echo "Converting $device to Btrfs..."
-    if btrfs-convert "$device"; then
-        echo "Conversion completed successfully."
-    else
-        echo "Conversion failed."
-        return 1
-    fi
 }
 
 # Function to execute the selected command
@@ -72,7 +38,7 @@ execute_command() {
             echo "Setting up Pipewire..."
             ;;
         4)
-            apk add networkmanager networkmanager-wifi;wget https://raw.githubusercontent.com/soltros/alpinebuilder/main/configs/NetworkManager.conf -O /etc/NetworkManager/NetworkManager.conf;rc-service networkmanager start; rc-update add networkmanager default;rc-service networking stop;rc-update del networking boot;rc-service networkmanager restart
+            apk add networkmanager nfs-utils networkmanager-wifi;wget https://raw.githubusercontent.com/soltros/alpinebuilder/main/configs/NetworkManager.conf -O /etc/NetworkManager/NetworkManager.conf;rc-service networkmanager start; rc-update add networkmanager default;rc-service networking stop;rc-update del networking boot;rc-service networkmanager restart
             echo "Configuring Network Manager..."
             ;;
         5)
@@ -108,19 +74,20 @@ execute_command() {
             echo "Setting up Nix package manager..."
             ;;
         13)
-            apk add gimp tailscale vlc firefox thunderbird git papirus-icon-theme geany distrobox wine fish util-linux pciutils hwdata-pci usbutils hwdata-usb coreutils binutils findutils grep iproute2 bash bash-completion udisks2 build-base abuild cmake extra-cmake-modules
+            apk add gimp tailscale vlc nano firefox thunderbird git papirus-icon-theme geany distrobox wine fish util-linux pciutils hwdata-pci usbutils hwdata-usb coreutils binutils findutils grep iproute2 bash bash-completion udisks2 build-base abuild cmake extra-cmake-modules
             echo "Setting up Derriks packages..."
             ;;
         14)
-            flatpak install com.mattjakeman.ExtensionManager com.discordapp.Discord com.spotify.Client com.valvesoftware.Steam org.telegram.desktop tv.plex.PlexDesktop com.nextcloud.desktopclient.nextcloud im.riot.Riot -y
-            echo "Setting up Derriks Flatpak packages..."
+            flatpak install com.mattjakeman.ExtensionManager com.discordapp.Discord io.kopia.KopiaUI com.spotify.Client com.valvesoftware.Steam org.telegram.desktop tv.plex.PlexDesktop com.nextcloud.desktopclient.nextcloud im.riot.Riot -y
+            echo "Setting up Derriks Flatpak packages... - Don't run as root"
             ;;
         15)
             setup-apkrepos; apk update; apk upgrade --available
             echo "Updating..."
             ;;
         16)
-            convert_to_btrfs
+            rc-service tailscale start;rc-update add tailscale;doas tailscale up -qr
+            echo "Configuring Tailscale..."
             ;;
         17)
             echo "Exiting..."
