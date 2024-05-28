@@ -71,7 +71,7 @@ execute_command() {
             echo "Setting up Flatpak..."
             ;;
         12)
-            apk add curl; sh <(curl -L https://nixos.org/nix/install) --daemon
+            apk add curl; curl https://raw.githubusercontent.com/soltros/alpinebuilder/main/nixpkg-no-daemon.sh | sh
             echo "Setting up Nix package manager..."
             ;;
         13)
