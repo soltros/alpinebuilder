@@ -17,7 +17,7 @@ show_menu() {
     echo "12) Option 12: Setup NixOS package manager"
     echo "13) Option 13: Setup Derriks packages"
     echo "14) Option 14: Setup Derriks Flatpak packages"
-    echo "15) Option 15: Update Alpine"
+    echo "15) Option 15: Setup Bluetooth"
     echo "16) Option 16: Setup Tailscale"
     echo "17) Exit"
 }
@@ -83,8 +83,8 @@ execute_command() {
             echo "Setting up Derriks Flatpak packages... - Don't run as root"
             ;;
         15)
-            setup-apkrepos; apk update; apk upgrade --available
-            echo "Updating..."
+            apk add bluez;modprobe btusb;adduser $USER lp;rc-service bluetooth start;rc-update add bluetooth default
+            echo "Setting up Bluetooth..."
             ;;
         16)
             rc-service tailscale start;rc-update add tailscale;doas tailscale up -qr
